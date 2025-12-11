@@ -1,0 +1,15 @@
+com\collaborativeediting\usermanagement\UserController$LoginResponse.class
+com\collaborativeediting\usermanagement\SecurityConfig.class
+com\collaborativeediting\usermanagement\User.class
+com\collaborativeediting\usermanagement\UserController$UpdateRoleRequest.class
+com\collaborativeediting\usermanagement\UserRepository.class
+com\collaborativeediting\usermanagement\UserController$UpdateProfileRequest.class
+com\collaborativeediting\usermanagement\UserRole.class
+com\collaborativeediting\usermanagement\UserController.class
+com\collaborativeediting\usermanagement\UserController$RegisterRequest.class
+com\collaborativeediting\usermanagement\UserManagementApplication.class
+com\collaborativeediting\usermanagement\DataInitializer.class
+com\collaborativeediting\usermanagement\JwtUtil.class
+com\collaborativeediting\usermanagement\UserController$LoginRequest.class
+com\collaborativeediting\usermanagement\UserController$UserPermissions.class
+com\collaborativeediting\usermanagement\UserService.class
