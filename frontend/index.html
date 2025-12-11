@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Document Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h3>Collaborative Editing System</h3>
+            <div id="user-info" class="user-info">
+                <span id="username-display"></span>
+                <button id="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Login/Register Section -->
+        <div id="auth-section" class="auth-section">
+            <div class="auth-tabs">
+                <button id="login-tab" class="tab active" onclick="showLogin()">Login</button>
+                <button id="register-tab" class="tab" onclick="showRegister()">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="form-container">
+                <h2>Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-username">Username:</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="form-container hidden">
+                <h3>Register</h3>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="reg-username">Username:</label>
+                        <input type="text" id="reg-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email:</label>
+                        <input type="email" id="reg-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-firstname">First Name:</label>
+                        <input type="text" id="reg-firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-lastname">Last Name:</label>
+                        <input type="text" id="reg-lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password:</label>
+                        <input type="password" id="reg-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="app-section" class="app-section hidden">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>My Documents</h4>
+                    <div class="sidebar-actions">
+                        <button onclick="showCreateDocument()" class="btn btn-small">+ New</button>
+                        <button onclick="showTemplates()" class="btn btn-small">Templates</button>
+                    </div>
+                </div>
+                <div id="documents-list" class="documents-list">
+                    <!-- Documents will be loaded here -->
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div id="document-view" class="document-view">
+                    <div class="document-header">
+                        <div class="document-info">
+                            <h4 id="document-title">Select a document...</h4>
+                            <div id="document-meta" class="document-meta">
+                                <span id="document-owner"></span>
+                                <span id="document-permission" class="permission-badge"></span>
+                            </div>
+                        </div>
+                        <div class="document-actions">
+                            <button onclick="showShareModal()" class="btn btn-secondary">Share</button>
+                            <!-- <button onclick="showExportModal()" class="btn btn-secondary">Export</button> -->
+                            <button onclick="saveDocument()" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="document-editor" placeholder=""></textarea>
+                    </div>
+                </div>
+
+                <!-- Templates View -->
+                <div id="templates-view" class="templates-view hidden">
+                    <div class="templates-header">
+                        <h2>Document Templates</h2>
+                        <button onclick="showDocumentView()" class="btn btn-secondary">Back to Documents</button>
+                    </div>
+                    <div class="templates-grid" id="templates-grid">
+                        <!-- Templates will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Create Document Modal -->
+                <div id="create-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Create New Document</h3>
+                        <form onsubmit="createDocument(event)">
+                            <div class="form-group">
+                                <label for="doc-title">Title:</label>
+                                <input type="text" id="doc-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="doc-content">Initial Content (optional):</label>
+                                <textarea id="doc-content" rows="5" placeholder="Leave empty to start with a blank document"></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" onclick="hideCreateModal()" class="btn btn-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Share Document Modal -->
+                <div id="share-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Share Document</h3>
+                        <div class="share-info">
+                            <p><strong>Document:</strong> <span id="share-doc-title"></span></p>
+                        </div>
+                        <form onsubmit="shareDocument(event)">
+                            <div class="form-group">
+                                <label for="share-username">Share with User:</label>
+                                <input type="text" id="share-username" required placeholder="Enter username">
+                            </div>
+                            <div class="form-group">
+                                <label for="share-permission">Permission Level:</label>
+                                <select id="share-permission" required>
+                                    <option value="READ">Read Only</option>
+                                    <option value="WRITE">Read & Write</option>
+                                </select>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" onclick="hideShareModal()" class="btn btn-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Share Document</button>
+                            </div>
+                        </form>
+                        <div class="current-shares">
+                            <h4>Current Shares</h4>
+                            <div id="shares-list" class="shares-list">
+                                <!-- Current shares will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Document Modal -->
+                <div id="export-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Export Document</h3>
+                        <div class="export-info">
+                            <p><strong>Document:</strong> <span id="export-doc-title"></span></p>
+                        </div>
+                        <div class="export-options">
+                            <div class="export-format" onclick="exportDocument('txt')">
+                                <div class="format-icon">📄</div>
+                                <div class="format-details">
+                                    <h4>Plain Text (.txt)</h4>
+                                    <p>Simple text format with basic formatting</p>
+                                </div>
+                            </div>
+                            <div class="export-format" onclick="exportDocument('html')">
+                                <div class="format-icon">🌐</div>
+                                <div class="format-details">
+                                    <h4>HTML (.html)</h4>
+                                    <p>Web page with styling and formatting</p>
+                                </div>
+                            </div>
+                            <div class="export-format" onclick="exportDocument('json')">
+                                <div class="format-icon">📊</div>
+                                <div class="format-details">
+                                    <h4>JSON (.json)</h4>
+                                    <p>Structured data format</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button onclick="hideExportModal()" class="btn btn-secondary">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Version History Modal -->
+                <div id="history-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Version History</h3>
+                        <div id="version-list" class="version-list">
+                            <!-- Version history will be loaded here -->
+                        </div>
+                        <div class="modal-actions">
+                            <button onclick="hideHistoryModal()" class="btn btn-secondary">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        <div id="status-message" class="status-message hidden"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
