@@ -1,0 +1,6 @@
+com\collaborativeediting\versioncontrol\VersionControlApplication.class
+com\collaborativeediting\versioncontrol\VersionControlController$SaveVersionRequest.class
+com\collaborativeediting\versioncontrol\DocumentVersion.class
+com\collaborativeediting\versioncontrol\VersionControlController.class
+com\collaborativeediting\versioncontrol\VersionControlService.class
+com\collaborativeediting\versioncontrol\DocumentVersionRepository.class
